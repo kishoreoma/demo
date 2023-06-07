@@ -583,15 +583,17 @@
       }
     },
     "securitySchemes": {
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
-      },
       "app_id": {
         "type": "apiKey",
         "name": "app_id",
-        "in": "header"
+        "in": "header",
+        "description": "Client Id"
+      },
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header",
+        "description": "Client Secreat Key"
       }
     }
   }
