@@ -49,7 +49,7 @@
                   "orderNumber",
                   "customerCode",
                   "customerName",
-                  "purchaseOrder"
+                  "purchaseOrder" 
                 ],
                 "type": "object",
                 "properties": {
