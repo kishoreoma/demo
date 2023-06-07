@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://apidev.customername.com",
+      "url": "https://apidev.customername.com", 
       "description": "Development environment"
     },
     {
