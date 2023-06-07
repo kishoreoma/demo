@@ -1,0 +1,598 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Qued Appointment  API",
+    "description": "This is a Qued Appointment Management API",
+    "contact": {
+      "email": "apiteam@qued.com"
+    },
+    "license": {
+      "name": "Qued 2.0",
+      "url": "http://www.qued.comlicenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Qued",
+    "url": "http://qued.com"
+  },
+  "servers": [
+    {
+      "url": "https://api.qued.com/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "appointment",
+      "description": "Everything about your appointments",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "paths": {
+    "/appointment/order": {
+      "post": {
+        "tags": [
+          "appointment"
+        ],
+        "summary": "Create appointments for a shipping order",
+        "description": "Create appointments for a shipping order",
+        "operationId": "createApppointments",
+        "requestBody": {
+          "description": "Create appointments for a shipping order",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "orderNumber",
+                  "customerCode",
+                  "customerName",
+                  "purchaseOrder"
+                ],
+                "type": "object",
+                "properties": {
+                  "orderNumber": {
+                    "type": "string",
+                    "description": "Shipping order number"
+                  },
+                  "customerCode": {
+                    "type": "string",
+                    "description": "Customer Code"
+                  },
+                  "customerName": {
+                    "type": "string",
+                    "description": "Customer Name"
+                  },
+                  "purchaseOrder": {
+                    "type": "string",
+                    "description": "Purchase Order of the request"
+                  },
+                  "totalMiles": {
+                    "type": "integer",
+                    "fomrat": "int32",
+                    "example": 450,
+                    "description": "Total miles of the trip"
+                  },
+                  "orderDetails": {
+                    "required": [
+                      "locationId",
+                      "appointmentDate"
+                    ],
+                    "type": "object",
+                    "properties": {
+                      "palletCount": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 10
+                      },
+                      "weightInLbs": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 100
+                      },
+                      "volumneInCufts": {
+                        "type": "number",
+                        "format": "double",
+                        "example": 175.5
+                      },
+                      "pieces": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 250
+                      }
+                    },
+                    "description": "Order load details"
+                  },
+                  "stopLocations": {
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "stopType",
+                        "tmsLocationId",
+                        "tmsLocationName",
+                        "stopOrderNumber",
+                        "appointmentDate"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "stopType": {
+                          "type": "string",
+                          "example": "PICK",
+                          "description": "Stop location type - Pickup/delivery",
+                          "enum": [
+                            "PICK",
+                            "DROP"
+                          ]
+                        },
+                        "stopOrderNumber": {
+                          "type": "integer",
+                          "format": "int32",
+                          "example": 1,
+                          "description": "Sequence of locations"
+                        },
+                        "tmsLocationId": {
+                          "type": "string",
+                          "example": "WALVG101",
+                          "description": "Location ID configured in TMS system. This is the unique ID for each physical location configured in TMS."
+                        },
+                        "tmsStopId": {
+                          "type": "string",
+                          "example": "zz1gv27jbse03k4GWCLM01",
+                          "description": "Stop ID configured in TMS system. This is the unique ID for each stop. This uniquly identifies the stop with in any order."
+                        },
+                        "tmsLocationName": {
+                          "type": "string",
+                          "example": "Walmart #4567"
+                        },
+                        "storeNumber": {
+                          "type": "string",
+                          "example": 4567,
+                          "description": "Store location specific code/number"
+                        },
+                        "purchaseOrder": {
+                          "type": "string",
+                          "example": 12345,
+                          "description": "Purchase Order number, enter if this location has different purchase order number. If not entered order level purchase order number will be used."
+                        },
+                        "referenceNumber": {
+                          "type": "string",
+                          "example": 12345
+                        },
+                        "bolNumber": {
+                          "type": "string",
+                          "example": 12345
+                        },
+                        "milesFromPreviousStop": {
+                          "type": "integer",
+                          "format": "int32",
+                          "example": 250,
+                          "description": "Distance between the last stop and this stop (in miles)"
+                        },
+                        "stopLoadDetails": {
+                          "required": [
+                            "locationId",
+                            "appointmentDate"
+                          ],
+                          "type": "object",
+                          "properties": {
+                            "palletCount": {
+                              "type": "integer",
+                              "format": "int32",
+                              "example": 10
+                            },
+                            "weightInLbs": {
+                              "type": "number",
+                              "format": "double",
+                              "example": 100
+                            },
+                            "volumneInCufts": {
+                              "type": "number",
+                              "format": "double",
+                              "example": 175.5
+                            },
+                            "pieces": {
+                              "type": "integer",
+                              "format": "int32",
+                              "example": 250
+                            }
+                          }
+                        },
+                        "appointmentDate": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "preferredAppointmentTime": {
+                          "type": "string",
+                          "example": 2300,
+                          "pattern": "^\\d{4}$",
+                          "description": "Time format is in the 24 clock and in EST <p>Example 1 :  2300 - for 11:00 PM EST <p>Example 2 :  0030 - for 12:30 AM EST"
+                        },
+                        "alreadyScheduled": {
+                          "type": "boolean",
+                          "default": false,
+                          "description": "Set this to true if shipper already scheduled appointment and not required to schedule an appointment"
+                        }
+                      }
+                    },
+                    "description": "Delivery locations should be in the sequence of the delivery. First delivery location in the array will be scheduled to deliver first and followed by the next delivery location in the array, then next one..,"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized. Invalid ID or Key"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "security": [
+          {
+            "api_key": [],
+            "app_id": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ShippingOrder": {
+        "required": [
+          "orderNumber",
+          "customerCode",
+          "customerName",
+          "purchaseOrder"
+        ],
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "string",
+            "description": "Shipping order number"
+          },
+          "customerCode": {
+            "type": "string",
+            "description": "Customer Code"
+          },
+          "customerName": {
+            "type": "string",
+            "description": "Customer Name"
+          },
+          "purchaseOrder": {
+            "type": "string",
+            "description": "Purchase Order of the request"
+          },
+          "totalMiles": {
+            "type": "integer",
+            "fomrat": "int32",
+            "example": 450,
+            "description": "Total miles of the trip"
+          },
+          "orderDetails": {
+            "required": [
+              "locationId",
+              "appointmentDate"
+            ],
+            "type": "object",
+            "properties": {
+              "palletCount": {
+                "type": "integer",
+                "format": "int32",
+                "example": 10
+              },
+              "weightInLbs": {
+                "type": "number",
+                "format": "double",
+                "example": 100
+              },
+              "volumneInCufts": {
+                "type": "number",
+                "format": "double",
+                "example": 175.5
+              },
+              "pieces": {
+                "type": "integer",
+                "format": "int32",
+                "example": 250
+              }
+            },
+            "description": "Order load details"
+          },
+          "stopLocations": {
+            "type": "array",
+            "items": {
+              "required": [
+                "stopType",
+                "tmsLocationId",
+                "tmsLocationName",
+                "stopOrderNumber",
+                "appointmentDate"
+              ],
+              "type": "object",
+              "properties": {
+                "stopType": {
+                  "type": "string",
+                  "example": "PICK",
+                  "description": "Stop location type - Pickup/delivery",
+                  "enum": [
+                    "PICK",
+                    "DROP"
+                  ]
+                },
+                "stopOrderNumber": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1,
+                  "description": "Sequence of locations"
+                },
+                "tmsLocationId": {
+                  "type": "string",
+                  "example": "WALVG101",
+                  "description": "Location ID configured in TMS system. This is the unique ID for each physical location configured in TMS."
+                },
+                "tmsStopId": {
+                  "type": "string",
+                  "example": "zz1gv27jbse03k4GWCLM01",
+                  "description": "Stop ID configured in TMS system. This is the unique ID for each stop. This uniquly identifies the stop with in any order."
+                },
+                "tmsLocationName": {
+                  "type": "string",
+                  "example": "Walmart #4567"
+                },
+                "storeNumber": {
+                  "type": "string",
+                  "example": 4567,
+                  "description": "Store location specific code/number"
+                },
+                "purchaseOrder": {
+                  "type": "string",
+                  "example": 12345,
+                  "description": "Purchase Order number, enter if this location has different purchase order number. If not entered order level purchase order number will be used."
+                },
+                "referenceNumber": {
+                  "type": "string",
+                  "example": 12345
+                },
+                "bolNumber": {
+                  "type": "string",
+                  "example": 12345
+                },
+                "milesFromPreviousStop": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 250,
+                  "description": "Distance between the last stop and this stop (in miles)"
+                },
+                "stopLoadDetails": {
+                  "required": [
+                    "locationId",
+                    "appointmentDate"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "palletCount": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 10
+                    },
+                    "weightInLbs": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 100
+                    },
+                    "volumneInCufts": {
+                      "type": "number",
+                      "format": "double",
+                      "example": 175.5
+                    },
+                    "pieces": {
+                      "type": "integer",
+                      "format": "int32",
+                      "example": 250
+                    }
+                  }
+                },
+                "appointmentDate": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "preferredAppointmentTime": {
+                  "type": "string",
+                  "example": 2300,
+                  "pattern": "^\\d{4}$",
+                  "description": "Time format is in the 24 clock and in EST <p>Example 1 :  2300 - for 11:00 PM EST <p>Example 2 :  0030 - for 12:30 AM EST"
+                },
+                "alreadyScheduled": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Set this to true if shipper already scheduled appointment and not required to schedule an appointment"
+                }
+              }
+            },
+            "description": "Delivery locations should be in the sequence of the delivery. First delivery location in the array will be scheduled to deliver first and followed by the next delivery location in the array, then next one..,"
+          }
+        }
+      },
+      "OrderDetails": {
+        "required": [
+          "locationId",
+          "appointmentDate"
+        ],
+        "type": "object",
+        "properties": {
+          "palletCount": {
+            "type": "integer",
+            "format": "int32",
+            "example": 10
+          },
+          "weightInLbs": {
+            "type": "number",
+            "format": "double",
+            "example": 100
+          },
+          "volumneInCufts": {
+            "type": "number",
+            "format": "double",
+            "example": 175.5
+          },
+          "pieces": {
+            "type": "integer",
+            "format": "int32",
+            "example": 250
+          }
+        }
+      },
+      "Location": {
+        "required": [
+          "stopType",
+          "tmsLocationId",
+          "tmsLocationName",
+          "stopOrderNumber",
+          "appointmentDate"
+        ],
+        "type": "object",
+        "properties": {
+          "stopType": {
+            "type": "string",
+            "example": "PICK",
+            "description": "Stop location type - Pickup/delivery",
+            "enum": [
+              "PICK",
+              "DROP"
+            ]
+          },
+          "stopOrderNumber": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1,
+            "description": "Sequence of locations"
+          },
+          "tmsLocationId": {
+            "type": "string",
+            "example": "WALVG101",
+            "description": "Location ID configured in TMS system. This is the unique ID for each physical location configured in TMS."
+          },
+          "tmsStopId": {
+            "type": "string",
+            "example": "zz1gv27jbse03k4GWCLM01",
+            "description": "Stop ID configured in TMS system. This is the unique ID for each stop. This uniquly identifies the stop with in any order."
+          },
+          "tmsLocationName": {
+            "type": "string",
+            "example": "Walmart #4567"
+          },
+          "storeNumber": {
+            "type": "string",
+            "example": 4567,
+            "description": "Store location specific code/number"
+          },
+          "purchaseOrder": {
+            "type": "string",
+            "example": 12345,
+            "description": "Purchase Order number, enter if this location has different purchase order number. If not entered order level purchase order number will be used."
+          },
+          "referenceNumber": {
+            "type": "string",
+            "example": 12345
+          },
+          "bolNumber": {
+            "type": "string",
+            "example": 12345
+          },
+          "milesFromPreviousStop": {
+            "type": "integer",
+            "format": "int32",
+            "example": 250,
+            "description": "Distance between the last stop and this stop (in miles)"
+          },
+          "stopLoadDetails": {
+            "required": [
+              "locationId",
+              "appointmentDate"
+            ],
+            "type": "object",
+            "properties": {
+              "palletCount": {
+                "type": "integer",
+                "format": "int32",
+                "example": 10
+              },
+              "weightInLbs": {
+                "type": "number",
+                "format": "double",
+                "example": 100
+              },
+              "volumneInCufts": {
+                "type": "number",
+                "format": "double",
+                "example": 175.5
+              },
+              "pieces": {
+                "type": "integer",
+                "format": "int32",
+                "example": 250
+              }
+            }
+          },
+          "appointmentDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "preferredAppointmentTime": {
+            "type": "string",
+            "example": 2300,
+            "pattern": "^\\d{4}$",
+            "description": "Time format is in the 24 clock and in EST <p>Example 1 :  2300 - for 11:00 PM EST <p>Example 2 :  0030 - for 12:30 AM EST"
+          },
+          "alreadyScheduled": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set this to true if shipper already scheduled appointment and not required to schedule an appointment"
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "##default"
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      },
+      "app_id": {
+        "type": "apiKey",
+        "name": "app_id",
+        "in": "header"
+      }
+    }
+  }
+}
